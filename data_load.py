@@ -5,6 +5,7 @@ from PIL import Image
 
 filePath = "D:\\code\\NotePad\\SCUT-FBP5500_v2\\Images\\"
 
+
 def load_data(fileName):
 	x_img = []
 	y_label = []
@@ -16,27 +17,15 @@ def load_data(fileName):
 		imgName = line[0:index+1]
 		label = line[index+2:index+7]
 		img = filePath+imgName
+		im = np.array(Image.open(img))
+		x_img.append(im) 
+		label_np = np.array(label)
+		y_label.append(label_np)
 		
-		words = line
+	return x_img,y_label
 
-	fileName = words[0:9]
-	label = words[10:16]
-	print(filePath+fileName)
-	print(label)
-	
-	img = filePath+fileName
-	print(img)
-	im = np.array(Image.open(img))
-	# tmp = Image.open(img)
-	plt.imshow(im)
-	plt.axis('off')
-	plt.show()
-	
 if __name__ == "__main__":    
 
 	file = "D:\\code\\NotePad\\SCUT-FBP5500_v2\\train_test_files\\split_of_60%training and 40%testing\\train.txt"
-	load_data(file)
-	sStr1 = 'strchr'   
-	sStr = 's'   
-	nPos = sStr1.index(sStr)   
-	print(nPos)
+	x_train,y_train = load_data(file)
+	
