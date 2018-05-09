@@ -14,7 +14,7 @@ ImgPath2 = "D:\\code\\NotePad\\SCUT-FBP5500_v2\\Images\\"
 img_rows = 350
 img_cols = 350
 
-NB_ResNet_LAYERS_TO_FREEZE = 49
+NB_ResNet_LAYERS_TO_FREEZE = 172
 def process_line(line,ImgPath):
 
 	index = line.index('g')  
@@ -81,14 +81,14 @@ def train(textPath,ImgPath):
 	b = Dense(1)(a)
 	model = Model(inputs=basemodel.input, outputs=b)
 	setup_to_finetune(model)
-	#model.layers[0].trainable = False
+	# model.layers[0].trainable = False
 	print(model.summary())
 
 	adam = optimizers.Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)
 	model.compile(loss='mean_squared_error', optimizer=adam)
 	
 	history_ft = model.fit_generator(generate_arrays_from_file(textPath,ImgPath),
-                    steps_per_epoch=330, epochs=10)
+                    steps_per_epoch=2048, epochs=10)
 	# model.save("D:\\code\\NotePad\\ResNet50.model")
 		#保存神经网络的结构与训练好的参数
 	json_string = model.to_json()#等价于 json_string = model.get_config()  
@@ -102,4 +102,5 @@ if __name__ == "__main__":
 	ImgPath = "D:\\code\\NotePad\\SCUT-FBP5500_v2\\Images\\"
 
 	train(textPath,ImgPath)
+	
 	
