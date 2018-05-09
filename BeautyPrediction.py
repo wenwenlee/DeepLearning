@@ -80,15 +80,15 @@ def train(textPath,ImgPath):
 	#a = GlobalAveragePooling4D()(a)
 	b = Dense(1)(a)
 	model = Model(inputs=basemodel.input, outputs=b)
-	#setup_to_finetune(model)
-	model.layers[0].trainable = False
+	setup_to_finetune(model)
+	#model.layers[0].trainable = False
 	print(model.summary())
 
 	adam = optimizers.Adam(lr=0.001, beta_1=0.9, beta_2=0.999, epsilon=None, decay=0.0, amsgrad=False)
 	model.compile(loss='mean_squared_error', optimizer=adam)
 	
 	history_ft = model.fit_generator(generate_arrays_from_file(textPath,ImgPath),
-                    steps_per_epoch=1000, epochs=10)
+                    steps_per_epoch=330, epochs=10)
 	# model.save("D:\\code\\NotePad\\ResNet50.model")
 		#保存神经网络的结构与训练好的参数
 	json_string = model.to_json()#等价于 json_string = model.get_config()  
